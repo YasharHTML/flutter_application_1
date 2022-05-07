@@ -53,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
                     _checkIfCorrect(0);
                   },
                   child: AnswerButton(
-                    buttonText: "123",
+                    buttonText: "6",
                   )),
               TextButton(
                   style: ButtonStyle(
@@ -63,7 +63,7 @@ class _QuizPageState extends State<QuizPage> {
                     _checkIfCorrect(1);
                   },
                   child: AnswerButton(
-                    buttonText: "123",
+                    buttonText: "433",
                   )),
               TextButton(
                   style: ButtonStyle(
@@ -73,7 +73,7 @@ class _QuizPageState extends State<QuizPage> {
                     _checkIfCorrect(2);
                   },
                   child: AnswerButton(
-                    buttonText: "123",
+                    buttonText: "Messi > Ronaldo",
                   )),
               TextButton(
                   style: ButtonStyle(
