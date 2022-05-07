@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
               labelMain: monumentResponse.monuments[index].name, 
               labelSecondary: monumentResponse.monuments[index].location,
               imageUrl: monumentResponse.monuments[index].photoUrl, 
+              description: monumentResponse.monuments[index].description,
             );
           },
         ),

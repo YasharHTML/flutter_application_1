@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/constants/data_consts.dart';
-import 'package:myapp/ui/screens/answer_button.dart';
+import 'package:myapp/services/quiz_service.dart';
+import 'package:myapp/ui/widgets/question_tab.dart';
+import 'package:myapp/services/explore_service.dart';
+import 'package:myapp/models/reponses/monument_response.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({Key? key}) : super(key: key);
@@ -10,28 +13,23 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<bool> _selected = [false, false, false, false];
-  int _correct = 1;
-  bool _correctHit = false;
-  List<Color> _colors = [
-    Colors.transparent,
-    Colors.transparent,
-    Colors.transparent,
-    Colors.transparent
-  ];
-  void _checkIfCorrect(int index) {
-    setState(() {
-      if (!_correctHit) {
-        _selected[index] = true;
-        _colors[index] = index == _correct - 1 ? Colors.green : Colors.red;
-        if (index == _correct - 1) {
-          _correctHit = true;
-        }
-      }
-    });
-    print(_selected);
+  QuizService quizService = QuizService();
+
+  MonumentResponsePost monumentResponsePost = MonumentResponsePost(monuments: []);
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchData();
   }
 
+  Future<void> fetchData() async {
+    monumentResponsePost = await quizService.getMonumentsPost(1);
+    setState(() {});
+    debugPrint(monumentResponsePost.toString() + "11111");
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,54 +37,14 @@ class _QuizPageState extends State<QuizPage> {
           title: const Text(DataConsts.quizTitle),
         ),
         body: Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          child: Center(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(DataConsts.question),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(_colors[0])),
-                  onPressed: () {
-                    _checkIfCorrect(0);
-                  },
-                  child: AnswerButton(
-                    buttonText: "6",
-                  )),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(_colors[1])),
-                  onPressed: () {
-                    _checkIfCorrect(1);
-                  },
-                  child: AnswerButton(
-                    buttonText: "433",
-                  )),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(_colors[2])),
-                  onPressed: () {
-                    _checkIfCorrect(2);
-                  },
-                  child: AnswerButton(
-                    buttonText: "Messi > Ronaldo",
-                  )),
-              TextButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(_colors[3])),
-                  onPressed: () {
-                    _checkIfCorrect(3);
-                  },
-                  child: AnswerButton(
-                    buttonText: "123",
-                  )),
-            ],
-          )),
-        ));
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Center(
+              child: ListView.builder(
+                itemCount: monumentResponsePost.monuments.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return QuestionTab(data: monumentResponsePost.monuments[index]);
+                },
+              ),
+            )));
   }
 }

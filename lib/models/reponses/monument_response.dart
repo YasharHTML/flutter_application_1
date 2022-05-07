@@ -25,6 +25,21 @@ class MonumentResponse {
     };
 }
 
+class MonumentResponsePost {
+    MonumentResponsePost({
+        required this.monuments,
+    });
+
+    final List<dynamic> monuments;
+    // deserialize a json list
+    factory MonumentResponsePost.fromJson(List<dynamic> json) => MonumentResponsePost(
+        monuments: List<MonumentPost>.from(json.map((x) => MonumentPost.fromJson(x))),
+    );
+
+    // serialize a list of monuments
+    List<dynamic> toJson() => List<dynamic>.from(monuments.map((x) => x.toJson()));
+}
+
 class Monument {
     Monument({
         required this.uid,
@@ -61,6 +76,35 @@ class Monument {
     };
 }
 
+class MonumentPost {
+    MonumentPost({
+        required this.uid,
+        required this.title,
+        required this.correctAnswer,
+        required this.answers,
+    });
+
+    final int uid;
+    final String title;
+    final String correctAnswer;
+    final List<dynamic> answers;
+
+
+    factory MonumentPost.fromJson(Map<String, dynamic> json) => MonumentPost(
+        uid: json["uid"],
+        title: json["title"],
+        correctAnswer: json["correctAnswer"]["value"],
+        answers: List<String>.from(json["answers"].map((x) => x["value"].toString())),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "title": title,
+        "correctAnswer": correctAnswer,
+        "answers": List<dynamic>.from(answers.map((x) => x)),
+    };
+}
+
 class Latlon {
     Latlon({
         required this.lat,
@@ -80,3 +124,17 @@ class Latlon {
         "lon": lon,
     };
 }
+
+// class Answer {
+//     Answer({
+//         required this.uid,
+//         required this.value,
+//     });
+//     late int uid;
+//     late String value;
+
+//     factory Answer.fromJson(Map<String, dynamic> json) => Answer(
+//         uid: json["uid"],
+//         value: json["value"],
+//     );
+// }
